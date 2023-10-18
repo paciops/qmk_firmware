@@ -1,4 +1,6 @@
 #include QMK_KEYBOARD_H
+#include "ball.h" // Include the ball header file
+
 
 enum sofle_layers {
     /* _M_XYZ = Mac Os, _W_XYZ = Win/Linux */
@@ -109,14 +111,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #ifdef OLED_ENABLE
 
+Ball ball; // Declare the ball structure
+
 static void render_logo(void) {
-    static const unsigned char PROGMEM raw_logo[] = {
-        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    };
-    oled_write_raw_P(raw_logo, sizeof(raw_logo));
+    if (ball.x == 0 && ball.y == 0 && ball.vx == 0 && ball.vy == 0) {
+        spawn_ball(&ball); // Spawn the ball if it's not in motion
+    }
+
+    update_ball_position(&ball); // Update the position of the ball
+    draw_ball(&ball); // Draw the ball on the OLED display
 }
-
-
 
 static void print_status_narrow(void) {
     // Print current mode
