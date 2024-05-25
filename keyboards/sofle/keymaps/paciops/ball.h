@@ -13,5 +13,5 @@ typedef struct {
 // Function declarations for the ball operations
 void update_ball_velocity(Ball *ball);
 void spawn_ball(Ball *ball);
-void update_ball_position(Ball *ball);
+void update_ball_position(Ball *ball, unsigned  char speed);
 void draw_ball(Ball *ball);

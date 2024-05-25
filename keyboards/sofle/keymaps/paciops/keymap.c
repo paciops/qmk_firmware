@@ -1,6 +1,6 @@
 #include QMK_KEYBOARD_H
+#include <math.h>
 #include "ball.h" // Include the ball header file
-
 
 enum sofle_layers {
     /* _M_XYZ = Mac Os, _W_XYZ = Win/Linux */
@@ -117,8 +117,8 @@ static void render_logo(void) {
     if (ball.x == 0 && ball.y == 0 && ball.vx == 0 && ball.vy == 0) {
         spawn_ball(&ball); // Spawn the ball if it's not in motion
     }
-
-    update_ball_position(&ball); // Update the position of the ball
+    unsigned  char speed = round(get_current_wpm()/4);
+    update_ball_position(&ball, speed); // Update the position of the ball
     draw_ball(&ball); // Draw the ball on the OLED display
 }
 
@@ -320,19 +320,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
-        tap_code(KC_VOLD);
-        // if (clockwise) {
-        //     tap_code(KC_VOLU);
-        // } else {
-        //     tap_code(KC_VOLD);
-        // }
+        if (clockwise) {
+            tap_code(KC_VOLU);
+        } else {
+            tap_code(KC_VOLD);
+        }
     } else if (index == 1) {
-        tap_code(KC_VOLU);
-        // if (clockwise) {
-        //     tap_code(KC_PGDN);
-        // } else {
-        //     tap_code(KC_PGUP);
-        // }
+        if (clockwise) {
+            tap_code(KC_VOLU);
+        } else {
+            tap_code(KC_VOLD);
+        }
     }
     return true;
 }
